@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 import DishDetail from './DishdetailComponent';
 
-export class MenuComponent extends Component {
+class Menu extends Component {
 
     constructor(props) {
         super(props);
@@ -44,4 +44,4 @@ export class MenuComponent extends Component {
     }
 }
 
-export default MenuComponent
+export default Menu

@@ -5,9 +5,8 @@ class DishDetail extends Component {
     
     renderDishdetail=(dish)=>{
         if (dish != null){
-         console.log(dish.comments)
              return(
-                 <Card>
+                 <Card key={dish.id}>
                      <CardImg top src={dish.image} alt={dish.name}/>
                      <CardBody>
                        <CardTitle>{dish.name}</CardTitle>
@@ -25,15 +24,17 @@ class DishDetail extends Component {
     renderComment=(comment)=>
     { 
      if(comment!=null)
-     {console.log(comment)
+    {
      return(
         <div>
             <h4>Comments</h4>
-        <ul className="list-unstyled">
+        <ul key={comment.id}
+         className="list-unstyled">
            {comment.map(item=>
            <div>
            <li>{item.comment}</li>
-           <li>{`--${item.author}, ${item.date}`}</li><br/>
+           <li>--{item.author},
+           {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(item.date)))}</li><br/>
            </div>)}          
         </ul>
 

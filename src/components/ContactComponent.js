@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,Button,Label, Col,Row} from 'reactstrap';
-import {Control,LocalForm,} from 'react-redux-form'
+import {Control,LocalForm, Errors,} from 'react-redux-form'
 import {Link} from 'react-router-dom';
+
+const required=(val)=>val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
+const isNumber =(val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
     
@@ -63,7 +69,16 @@ class Contact extends Component {
                             <Control.text model=".firstname" id="firstname" name="firstname"
                                 placeholder="First Name"
                                 className="form-control"
+                                validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}
                                 />
+                            <Errors model=".firstname"
+                            className="text-danger"
+                            show="touched"
+                            messages={{
+                                required:"Field is Required",
+                                minLength:"minimum lenght of character is more than 2",
+                                maxLength:"maximum lenght of character is 15",
+                            }}/>
                         </Col>
                     </Row>
 
@@ -73,7 +88,17 @@ class Contact extends Component {
                             <Control.text model=".lastname" id="lastname" name="lastname"
                                 placeholder="Last Name"
                                 className="form-control"
+                                className="form-control"
+                                validators={{required,minLength:minLength(3),maxLength:maxLength(15)}}
                                 />
+                                <Errors model=".lastname"
+                                    className="text-danger"
+                                    show="touched"
+                                    messages={{
+                                        required:"Field is Required",
+                                        minLength:"minimum lenght of character is more than 2",
+                                        maxLength:"maximum lenght of character is 15",
+                                    }}/>
                         </Col>
                     </Row>
 
@@ -83,7 +108,18 @@ class Contact extends Component {
                             <Control.text model=".telnum" id="telnum" name="telnum"
                                 placeholder="Tel. Number"
                                 className="form-control"
+                                validators={{required,isNumber,minLength:minLength(10),maxLength:maxLength(12)}}
                                 />
+                            <Errors
+                            className="text-danger"
+                            model=".telnum"
+                            show="touched"
+                            messages={{
+                                required:"Field is Required",
+                                minLength:"minimum lenght of number is 10",
+                                maxLength:"maximum lenght of number is 12",
+                                isNumber:"Please enter a valid number"
+                            }}/>
                         </Col>
                     </Row>
 
@@ -92,7 +128,16 @@ class Contact extends Component {
                         <Col md={10}>
                             <Control.text model=".email" id="email" name="email"
                                 placeholder="Email"
-                                className="form-control" />
+                                className="form-control"
+                                validators={{required,validEmail}} />
+                            <Errors
+                             model=".email"
+                             className="text-danger"
+                             show="touched"
+                             messages={{
+                                 required:"Field is Required",
+                                 validEmail:"Please enter a valid Email id"
+                             }}/>
                         </Col>
                     </Row>
                     

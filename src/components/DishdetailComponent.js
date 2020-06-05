@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import { Card, CardImg, CardText, CardBody,CardTitle, Breadcrumb, BreadcrumbItem,Row,Col, Button,Modal,ModalBody,ModalHeader,Label } from 'reactstrap';
 import {LocalForm,Control, Errors} from 'react-redux-form';
 import {Link} from 'react-router-dom';
+import { Loading } from './LoadingComponent';
 
 const minLen=(len)=>(val)=> val && val.length>=len;
 const maxLen=(len)=>(val)=> !val || val.length<=len;
@@ -135,30 +136,54 @@ class CommentForm extends Component{
 const DishDetail=(props)=>
 {
     const {dish}=props;
-    return(
-    <div className="container">
-        <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{dish.name}</h3>
-                    <hr />
-                </div>                
+
+    if (props.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
             </div>
+        );
+    }
+    else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish != null)
+    {
+        return(
+        <div className="container">
             <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    <RenderDishDetail dish={dish} />
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{dish.name}</h3>
+                        <hr />
+                    </div>                
                 </div>
-                <div className="col-12 col-md-5 m-1">
-                    <RenderComment comments={props.comments}
-                            addComment={props.addComment}
-                            dishId={props.dish.id} />
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderDishDetail dish={dish} />
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComment comments={props.comments}
+                                addComment={props.addComment}
+                                dishId={props.dish.id} />
+                    </div>
                 </div>
-            </div>
-    </div>
-);
-}
+        </div>
+    );
+    }
+    else
+        return(<div></div>)
+    }
 
 export default DishDetail

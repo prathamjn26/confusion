@@ -1,29 +1,47 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { Fade, Stagger } from 'react-animation-components';
 
-function RenderLeader({leader})
-{   console.log(leader.image)
-    return(
-     <div>
-        {leader.map(item=>
+function RenderLeader({leaders,isLoading,errMess})
+{   
+        if (isLoading) {
+            return(
+                    <Loading/>
+            );
+        }
+        else if (errMess) {
+            return(
+                    <h4>{errMess}</h4>
+            );
+        }
+        else
+        {
+        return(
+        <div>
+        <Stagger in>
+        {leaders.map(item=>
+            <Fade in>
             <Media tag="li" className="mt-5">
                 <Media left className="mr-5">
-                    <Media object src={item.image} alt={item.name}/>
+                    <Media object src={baseUrl+item.image} alt={item.name}/>
                 </Media>
                 <Media body>
                     <Media heading>
-                     {item.name}                
+                        {item.name}                
                     </Media>
                     <p>{item.designation}</p>
                 {item.description}</Media>
-            </Media>)}
-     </div>
-    )
+            </Media>
+            </Fade>)}
+            </Stagger>
+         </div>)
+        }
 }
 
 function About(props) {
-    console.log(props.leaders)
     return(
         <div className="container">
             <div className="row">
@@ -80,7 +98,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        <RenderLeader leader={props.leaders}/>
+                        <RenderLeader leaders={props.leaders} isLoading={props.isLoading} errMess={props.errMess}/>
                     </Media>
                 </div>
             </div>
